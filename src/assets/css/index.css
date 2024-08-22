@@ -1,0 +1,18 @@
+/*  Basics */
+/* @import "basics/base.css";
+@import "basics/helpers.css";
+@import "basics/layout.css";
+@import "basics/animations.css"; */
+
+@import "./App.css";
+
+/* Pages */
+@import "./pages/home.css";
+@import "./pages/about.css";
+/* @import "./pages/EmailIndex.css" */
+
+/* Components */
+@import "./cmps/AppHeader.css";
+@import "./cmps/Sidebar.css"
+/* @import "./cmps/AppFooter.css";
+@import "./cmps/RobotList.css"; */

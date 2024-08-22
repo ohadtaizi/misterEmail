@@ -1,0 +1,15 @@
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .5em 1em;
+	background: lightsteelblue;
+
+	color: white;
+}
+
+.app-header nav  {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}

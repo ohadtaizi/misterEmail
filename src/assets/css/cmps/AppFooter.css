@@ -1,0 +1,63 @@
+/* AppHeader.css
+
+.app-header {
+    background-color: #f5f5f5;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+    top: 0;
+    left: 240px;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+  }
+  
+  .app-header .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .app-header .logo h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .app-header .logo img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .app-header .search-bar {
+    flex-grow: 1;
+    margin-left: 20px;
+  }
+  
+  .app-header .search-bar input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 16px;
+  }
+  
+  .app-header .user-profile {
+    display: flex;
+    align-items: center;
+  }
+  
+  .app-header .user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .app-header .user-profile .user-name {
+    font-size: 16px;
+    color: #333;
+  }
+   */
