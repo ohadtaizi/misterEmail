@@ -13,10 +13,12 @@ function query(entityType, delay = 200) {
 
 function get(entityType, entityId) {
     return query(entityType).then(entities => {
-        const entity = entities.find(entity => entity.id === entityId)
-        if (!entity) throw new Error(`Get failed, cannot find entity with id: ${entityId} in: ${entityType}`)
-        return entity
-    })
+        const entity = entities.find(entity => entity.id === entityId);
+        if (!entity) {
+            throw new Error(`Get failed, cannot find entity with id: ${entityId} in: ${entityType}`);
+        }
+        return entity;
+    });
 }
 
 function post(entityType, newEntity) {
@@ -32,7 +34,9 @@ function post(entityType, newEntity) {
 function put(entityType, updatedEntity) {
     return query(entityType).then(entities => {
         const idx = entities.findIndex(entity => entity.id === updatedEntity.id)
-        if (idx < 0) throw new Error(`Update failed, cannot find entity with id: ${updatedEntity.id} in: ${entityType}`)
+        if (idx < 0){
+             return Promise.reject(new Error(`Update failed, cannot find entity with id: ${updatedEntity.id} in: ${entityType}`));
+        }
         entities.splice(idx, 1, updatedEntity)
         _save(entityType, entities)
         return updatedEntity

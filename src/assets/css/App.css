@@ -1,3 +1,8 @@
+html, body, #root {
+    height: 100%; /* Ensure the background covers the full height */
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
 body {
     height: 100vh;
     margin: 0;
@@ -13,6 +18,9 @@ body {
 main {
     display: flex;
     flex-grow: 1;
+}
+.main-layout {
+    flex-grow: 1; /* Ensures it grows to fill the remaining space */
 }
 
 /* .sidebar {
@@ -107,4 +115,12 @@ main {
 }
 .email-filter{
     grid-column: 2;
+}
+.email-preview.dark {
+    background-color: #f1f3f4; /* Adjust the color to match the one in your image */
+    color: #333; /* Ensure the text color is readable on the new background */
+}
+
+.email-preview.dark:hover {
+    background-color: #e0e0e0; /* Optional: Slightly darker color on hover */
 }

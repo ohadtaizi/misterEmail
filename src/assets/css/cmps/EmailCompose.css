@@ -1,0 +1,88 @@
+/* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensures it's on top of other content */
+}
+
+/* Popup Window */
+.popup {
+  position: relative;
+  background-color: white;
+  width: 600px;
+  max-width: 95%;
+  max-height: 90vh;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Compose Window */
+.email-compose {
+  display: flex;
+  flex-direction: column;
+}
+
+.email-compose.fullscreen {
+  width: 100%;
+  height: 100%;
+}
+
+.email-compose.minimized {
+  height: 30px;
+  overflow: hidden;
+}
+
+.compose-header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  align-items: center;
+}
+
+.compose-body {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.compose-footer {
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: space-between;
+}
+
+button, .compose-header button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 16px;
+}
+
+button.send-btn {
+  background-color: #1a73e8;
+  color: white;
+  border-radius: 4px;
+  padding: 8px 16px;
+  border: none;
+  font-weight: bold;
+}
+
+button.send-btn:hover {
+  background-color: #135abf;
+}

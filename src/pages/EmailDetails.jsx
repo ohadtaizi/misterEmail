@@ -12,9 +12,18 @@ export function EmailDetails() {
         loadEmail()
     }, [mailId])
 
-    async function loadEmail() {
-        const email = await emailService.getById(mailId)
-        setEmail(email)
+    // async function loadEmail() {
+    //     const email = await emailService.getById(mailId)
+    //     setEmail(email)
+    // }
+    async function loadEmail(emailId) {
+        try {
+            const email = await emailService.getById(emailId);
+            setEmail(email)
+            // rest of the code
+        } catch (err) {
+            console.error('Failed to load email', err);
+        }
     }
 
   

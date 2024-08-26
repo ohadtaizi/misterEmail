@@ -6,6 +6,7 @@ export const emailService = {
     getById,
     remove,
     save,
+    saveDraft,
     getDefaultFilter,
 }
 
@@ -74,11 +75,10 @@ async function _createEmails() {
             id: makeId(),
             subject: 'Your invoice',
             body: 'Here is your invoice for the recent purchase.',
-            from: 'billing@appsus.com',
             isRead: true,
             isStarred: false,
             sentAt: "september 11 ", removedAt: null,
-            from: { email: "ohad@taizi.com" },
+            from:  "ohad@taizi.com" ,
             to: 'billing@momo.com',
             sentAt: 1551133930594
         },
@@ -111,19 +111,20 @@ async function queryfromLocalStorge(filterBy = {}) {
     try {
         let emails = await storageService.query(STORAGE_KEY);
 
-
         if (filterBy?.status) {
             emails = emails.filter(email => {
                 if (filterBy.status === 'inbox') {
-                    return email.to === loggedinUser.email && !email.removedAt;
+                    return email.to === loggedinUser.email && !email.removedAt && !email.isDraft;
                 } else if (filterBy.status === 'sent') {
-                    return email.from === loggedinUser.email && !email.removedAt;
+                    return email.from === loggedinUser.email && !email.removedAt && !email.isDraft;
                 } else if (filterBy.status === 'trash') {
                     return email.removedAt !== null;
                 } else if (filterBy.status === 'starred') {
-                    return email.isStarred === true && !email.removedAt;
+                    return email.isStarred === true && !email.removedAt && !email.isDraft;
+                } else if (filterBy.status === 'draft') {
+                    return email.isDraft; // Filter only drafts
                 }
-                return true;
+                return !email.removedAt; // Default: exclude trashed emails
             });
         }
 
@@ -156,17 +157,43 @@ function getById(emailId) {
 function remove(emailId) {
     return storageService.remove(STORAGE_KEY, emailId)
 }
+async function saveDraft(draftEmail) {
+    if (!draftEmail.id) {
+        draftEmail.id = makeId(); // Generate an ID for new drafts
+    }
+    draftEmail.isDraft = true; // Mark the email as a draft
+    return save(draftEmail); // Save the draft using the existing save method
+}
 
 function save(emailToSave) {
+    console.log('Attempting to save email:', emailToSave);
     if (emailToSave.id) {
-        return storageService.put(STORAGE_KEY, emailToSave);
+        // Check if the email exists before attempting to update it
+        return storageService.get(STORAGE_KEY, emailToSave.id).then(existingEmail => {
+            if (existingEmail) {
+                // Email exists, update it
+                console.log('Email exists, updating:', existingEmail);
+                return storageService.put(STORAGE_KEY, emailToSave);
+            } else {
+                // If the email does not exist in storage, create a new one
+                console.log('Email not found, creating new email');
+                return storageService.post(STORAGE_KEY, emailToSave);
+            }
+        }).catch((err) => {
+            console.error('Error while checking email existence:', err);
+            // Always create a new email in case of errors (e.g., if the email was already deleted)
+            return storageService.post(STORAGE_KEY, emailToSave);
+        });
     } else {
+        // New email, assign ID and create it
         emailToSave.id = makeId();
+        console.log('New email ID assigned:', emailToSave.id);
         emailToSave.from = loggedinUser.email;
         emailToSave.sentAt = Date.now();
         return storageService.post(STORAGE_KEY, emailToSave);
     }
 }
+
 
 
 function getDefaultFilter() {
