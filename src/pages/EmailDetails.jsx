@@ -9,7 +9,7 @@ export function EmailDetails() {
     const [email, setEmail] = useState(null)
 
     useEffect(() => {
-        loadEmail()
+        loadEmail(mailId)
     }, [mailId])
 
     // async function loadEmail() {
@@ -19,13 +19,17 @@ export function EmailDetails() {
     async function loadEmail(emailId) {
         try {
             const email = await emailService.getById(emailId);
-            setEmail(email)
-            // rest of the code
+            if (email) {
+                setEmail(email);
+            } else {
+                console.error(`Email with ID ${emailId} not found.`);
+                // Handle the case where the email is not found (e.g., navigate back or show a message)
+            }
         } catch (err) {
             console.error('Failed to load email', err);
+            // Optionally handle the error, like showing an alert or navigating away
         }
     }
-
   
 
     if (!email) return <div>Loading...</div>

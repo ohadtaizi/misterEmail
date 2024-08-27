@@ -105,7 +105,7 @@ async function _createEmails() {
 
 
 
-async function queryfromLocalStorge(filterBy = {}) {
+async function queryfromLocalStorge(filterBy = {},sortBy = { field: 'date', order: 'desc' }) {
     console.log("queryfromLocalStorge");
 
     try {
@@ -135,10 +135,26 @@ async function queryfromLocalStorge(filterBy = {}) {
             );
         }
 
-        // if (filterBy?.isRead !== null) {
+        if (filterBy?.isRead !== null) {
 
-        //     emails = emails?.filter(email => email?.isRead === filterBy?.isRead);
-        // }
+            emails = emails?.filter(email => email?.isRead === filterBy?.isRead);
+        }
+        // Apply sorting
+        if (sortBy.field === 'date') {
+            emails.sort((a, b) => {
+                const dateA = new Date(a.sentAt);
+                const dateB = new Date(b.sentAt);
+                return sortBy.order === 'asc' ? dateA - dateB : dateB - dateA;
+            });
+        } else if (sortBy.field === 'title') {
+            emails.sort((a, b) => {
+                const titleA = a.subject.toLowerCase();
+                const titleB = b.subject.toLowerCase();
+                if (titleA < titleB) return sortBy.order === 'asc' ? -1 : 1;
+                if (titleA > titleB) return sortBy.order === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
 
         return emails;
     }

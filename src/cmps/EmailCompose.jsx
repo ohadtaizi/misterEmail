@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { emailService } from '../services/emailService';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,13 +15,16 @@ export function EmailCompose({ viewState, email, onClose, onToggleViewState }) {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const autoSaveInterval = setInterval(() => {
-            emailService.saveDraft(draftEmail); // Save the draft to storage
-        }, 5000);
+     // Update useEffect to ensure drafts are saved properly
+     useEffect(() => {
+        if (draftEmail.isDraft) { // Check if it's a draft before auto-saving
+            const autoSaveInterval = setInterval(() => {
+                emailService.saveDraft(draftEmail); // Save the draft to storage
+            }, 5000);
 
-        return () => clearInterval(autoSaveInterval); // Clear interval on unmount
-    }, [draftEmail]);
+            return () => clearInterval(autoSaveInterval); // Clear interval on unmount
+        }
+    }, [draftEmail.isDraft, draftEmail]); // Add draftEmail.isDraft to the dependency array
     
     function handleChange({ target }) {
         const { name, value } = target;

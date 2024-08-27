@@ -7,16 +7,18 @@ import { Outlet } from "react-router-dom";
 
 export function EmailIndex() {
   const [emails, setEmail] = useState([]);
-//   const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter());
-const [filterBy, setFilterBy] = useState(null);
+  const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter());
+  const [sortBy, setSortBy] = useState({ field: 'date', order: 'desc' }); // Add state for sorting
+
+// const [filterBy, setFilterBy] = useState(null);
 console.log(filterBy);
   useEffect(() => {
     loadEmail();
-  }, [filterBy]);
+  }, [filterBy,sortBy]);
   
   async function loadEmail() {
     try {
-      const emails = await emailService.queryfromLocalStorge(filterBy);
+      const emails = await emailService.queryfromLocalStorge(filterBy, sortBy);
       console.log(emails);
       setEmail(emails);
     } catch (err) {
@@ -33,10 +35,22 @@ console.log(filterBy);
         alert('Couldnt remove email')
     }
 }
-// function onFilterBy(filterBy) {
-//     console.log("filterBy: ", filterBy)
-//     setFilterBy(filterBy)
+// function onSetFilter(status) {
+//   return () => {
+//       if (setFilterBy) {
+//           setFilterBy(prevFilter => ({
+//               ...prevFilter,
+//               status, 
+//               isRead: null, // Reset isRead filter when changing status
+//           }));
+//       } else {
+//           console.error('setFilterBy is not a function');
+//       }
+//   };
 // }
+function onSetSort(field, order) {
+  setSortBy({ field, order }); // Update the sorting criteria
+}
 
   if (!emails) return <div>Loading...</div>;
 
@@ -44,7 +58,8 @@ console.log(filterBy);
     <section className="email-index"   >
       <EmailFolderList filterBy={filterBy} setFilterBy={setFilterBy} />
       {/* <section className="emails-list"> */}
-        <EmailFilter setFilterBy={setFilterBy} />
+      <EmailFilter setFilterBy={setFilterBy} onSetSort={onSetSort} /> {/* Pass onSetSort as a prop */}
+        
         <EmailList emails={emails} onRemove={removeEmail} />
       {/* </section> */}
       <Outlet />

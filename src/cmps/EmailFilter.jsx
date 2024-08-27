@@ -1,27 +1,37 @@
 import React, { useState, useEffect } from "react";
 
-export function EmailFilter({ setFilterBy }) {
-    const [filter, setFilter] = useState({ txt: '', isRead: '' });
-    const [isRead, setIsRead] = useState(null);
+export function EmailFilter({ setFilterBy,onSetSort  }) {
+    const [filter, setFilter] = useState({ txt: '', isRead:  null });
+    // const [sortBy, setSortBy] = useState({ field: 'date', order: 'desc' }); // Add state for sorting
+    // const [isRead, setIsRead] = useState(null);
     useEffect(() => {
-        onSetFilter();
-    }, [filter]);
+        setFilterBy(filter);
+    }, [filter,setFilterBy]);
 
     function handleChange({ target }) {
         const { name, value } = target;
         setFilter(prev => ({ ...prev, [name]: value }));
     }
     function btnText(){
-        return isRead === null ? "All" : isRead ? "Read" : "Unread";
+        return filter.isRead === null ? "All" : filter.isRead ? "Read" : "Unread";
     }
-    function onSetFilter() {
-        setFilterBy({ ...filter, isRead });
-    }
+    // function onSetFilter() {
+    //     setFilterBy({ ...filter, isRead });
+    // }
 
     function onReadBtnClicked() {
-        setIsRead(prev => (prev === null ? true : prev === true ? false : null));
-        setFilter(prev => ({ ...prev, isRead: isRead === null ? true : isRead === true ? false : null }));
+        setFilter(prev => ({ 
+            ...prev, 
+            isRead: prev.isRead === null ? true : !prev.isRead
+        }));
+        // setIsRead(prev => (prev === null ? true : prev === true ? false : null));
+        // setFilter(prev => ({ ...prev, isRead: isRead === null ? true : isRead === true ? false : null }));
     }
+    // function onSetSort(field, order) {
+    //     setSortBy({ field, order }); // Update the sorting criteria
+        
+    //   }
+      
 
     return (
         <section className="email-filter">
@@ -39,6 +49,10 @@ export function EmailFilter({ setFilterBy }) {
                 <option value="false">Unread</option>
             </select> */}
     <button className="isRead" onClick={onReadBtnClicked}>{btnText()}</button>
+    <div className="email-sort">
+                <button onClick={() => onSetSort('date', filter.order === 'asc' ? 'desc' : 'asc')}>Sort by Date</button>
+                <button onClick={() => onSetSort('title', filter.order === 'asc' ? 'desc' : 'asc')}>Sort by Title</button>
+            </div>
     </section>
     );
 }

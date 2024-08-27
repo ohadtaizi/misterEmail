@@ -35,7 +35,7 @@ export function EmailPreview({ email, onToggleStar, onToggleRead, onDelete, onOp
         // setIsRead(prev => !prev);
         // if (onToggleRead) onToggleRead(email.id);
         setIsRead(prev => !prev); // Toggle read/unread status
-        if (onToggleRead) onToggleRead(email.id);
+        if (onToggleRead) onToggleRead(email.id,!isRead);
     }
 
     function handleDelete(e) {
